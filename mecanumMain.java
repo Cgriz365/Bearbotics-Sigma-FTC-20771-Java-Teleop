@@ -16,7 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 
-public class DrivetrainMecanum extends BlocksOpModeCompanion {
+public class MecanumMain extends BlocksOpModeCompanion {
     
     // Variables for the hardware configuration names of our drive motors
     static String _driveLeftFrontName, _driveLeftBackName, _driveRightFrontName, _driveRightBackName;
