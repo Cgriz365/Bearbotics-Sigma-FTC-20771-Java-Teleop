@@ -14,6 +14,7 @@ public class EncoderLift extends BlockOpModeCompanion {
   static double slideSpeed = 0.3;
   static double slideUpperLimit = 5000;
   static double[] slideLevel = {1350, 3000};
+  static double currentLevel = 0;
 }
 
 @ExportToBlocks (
@@ -56,6 +57,7 @@ public class EncoderLift extends BlockOpModeCompanion {
     slideMotor.setPower(0); // Stopping the Slide
     slideEncoder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // Reseting the encoder to 0
     telemetry.addData("Encoder Zero", slideEncoder.getCurrentPosition()); // Adding the encoder data to telemetry for debugging.
+    currentLevel = 0;
     return true;
 }
 
@@ -75,6 +77,7 @@ public class EncoderLift extends BlockOpModeCompanion {
       return false; // If it reaches the upper limit it will return false meaning it cannot go up higher
     }
     stopSlideMotion(); // Setting the slide power to 0
+    currentLevel = -1; // Sets level to unknown
 }
 
 @ExportToBlocks (
@@ -93,6 +96,7 @@ public class EncoderLift extends BlockOpModeCompanion {
       return false; // If the touch sensor is pressed it will return false meaning it cannot go down further
     }
     stopSlideMotion(); // Setting the slide power to 0
+    currentLevel = -1; // Set level to unknown
 }
 
 @ExportToBlocks (
@@ -126,6 +130,7 @@ public class EncoderLift extends BlockOpModeCompanion {
         while (slideEncoder.getCurrentPos >= slideLevel[level] {
           slideMotor.setPower(slideSpeed); }
         stopSlideMotion();
+        currentLevel = level;
         return true;
       }
                
@@ -134,6 +139,7 @@ public class EncoderLift extends BlockOpModeCompanion {
         while (slideEncoder.getCurrentPos <= slideLevel[level] {
           slideMotor.setPower(slideSpeed); }
         stopSlideMotion();
+        currentLevel = level;
         return true;
       }
     }
