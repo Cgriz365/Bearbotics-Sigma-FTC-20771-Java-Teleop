@@ -95,3 +95,48 @@ public class EncoderLift extends BlockOpModeCompanion {
     stopSlideMotion(); // Setting the slide power to 0
 }
 
+@ExportToBlocks (
+    heading = "Get Slide Position",
+    color = 255,
+    comment = "Returns the value of the slide position."
+  )
+
+  public static double getPos() {
+    return slideEncoder.getCurrentPosition();
+}
+
+@ExportToBlocks (
+    heading = "Move Slide to Level",
+    color = 255,
+    comment = "Moving the Slide to a Specified Level."
+    parameterLabels = {"Level"} // 0 is down, 1 is short pole, 2 is mid pole, 3 is high pole
+  )
+
+  public static boolean moveSlideToLevel(int level) {
+    if (level < 0) {
+      return false; // Returns false if invalid level is specified
+    }
+    else if (level == 0)  { // If the level is zero it will move the slide down until it hits the touch sensor
+      homeSlide();
+      return true; // Returns true is successfully lowered the slide
+    }
+    else if ((level > 0) && (level < 3)) {
+      if (slideEncoder.getCurrentPos > slideLevel[level] { // Moves the slide down until it reaches the level specified
+        slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        while (slideEncoder.getCurrentPos >= slideLevel[level] {
+          slideMotor.setPower(slideSpeed); }
+        stopSlideMotion();
+        return true;
+      }
+               
+      else if (slideEncoder.getCurrentPos < slideLevel[level] { // Moves slide up until it reaches the level specified
+        slideMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        while (slideEncoder.getCurrentPos <= slideLevel[level] {
+          slideMotor.setPower(slideSpeed); }
+        stopSlideMotion();
+        return true;
+      }
+    }
+    else {return false;} // Return false if invalid level is specified
+}
+
