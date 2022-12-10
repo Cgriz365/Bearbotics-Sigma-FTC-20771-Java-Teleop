@@ -12,6 +12,8 @@ public class EncoderLift extends BlockOpModeCompanion {
   private TouchSensor slideTouch; // Rev Robotics Touch Sensor
   private DcMotor slideEncoder; // Mecanum Motor Port for encoder.
   static double slideSpeed = 0.3;
+  static double slideUpperLimit = 5000;
+  static double[] slideLevel = {1350, 3000};
 }
 
 @ExportToBlocks (
@@ -56,3 +58,40 @@ public class EncoderLift extends BlockOpModeCompanion {
     telemetry.addData("Encoder Zero", slideEncoder.getCurrentPosition()); // Adding the encoder data to telemetry for debugging.
     return true;
 }
+
+@ExportToBlocks (
+    heading = "Move Slide Up",
+    color = 255,
+    comment = "Moving the Slide Directly Up."
+  )
+
+  public static boolean moveSlideUp() {
+    if (slideEncoder.getCurrentPosistion < slideUpperLimit) { // Setting limits in code to stop the slide from breaking itself.
+      slideMotor.setDirection(DcMotorSimple.Direction.FORWARD); // Sets direction of the motor to forward
+      slideMotor.setPower(slideSpeed); // Setting the power to the speed specified above
+      return true;
+    }
+    else {
+      return false; // If it reaches the upper limit it will return false meaning it cannot go up higher
+    }
+    stopSlideMotion(); // Setting the slide power to 0
+}
+
+@ExportToBlocks (
+    heading = "Move Slide Down",
+    color = 255,
+    comment = "Moving the Slide Directly Down."
+  )
+
+  public static boolean moveSlideDown() {
+    if (!slideTouch.isPressed) { // Setting limits in code to stop the slide from breaking itself.
+      slideMotor.setDirection(DcMotorSimple.Direction.REVERSE); // Sets direction of the motor to reverse
+      slideMotor.setPower(slideSpeed); // Setting the power to the speed specified above
+      return true;
+    }
+    else {
+      return false; // If the touch sensor is pressed it will return false meaning it cannot go down further
+    }
+    stopSlideMotion(); // Setting the slide power to 0
+}
+
