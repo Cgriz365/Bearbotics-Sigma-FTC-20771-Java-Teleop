@@ -146,3 +146,13 @@ public class EncoderLift extends BlockOpModeCompanion {
     else {return false;} // Return false if invalid level is specified
 }
 
+
+@ExportToBlocks (
+    heading = "Get Current Level",
+    color = 255,
+    comment = "Returns the value of the slide level."
+  )
+
+  public static double getLevel() {
+    return currentLevel;
+}
