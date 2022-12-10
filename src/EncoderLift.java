@@ -27,11 +27,32 @@ public class EncoderLift extends BlockOpModeCompanion {
     slideTouch = hardwareMap.get(TouchSensor.class, touchSensor);
     slideEncoder = hardwareMap.get(DcMotor.class, encoderMotor);
     /* Homing the Linear Slide */
+    homeSlide();
+  }
+
+@ExportToBlocks (
+    heading = "Stop Slide Motion",
+    color = 255,
+    comment = "Completly stopping the slide"
+  )
+
+  public static boolean stopSlideMotion() {
+    slideMotor.setPower(0);
+}
+
+@ExportToBlocks (
+  heading = "Home and Zero Slide Encoder",
+  color = 255;
+  comment = "Moves the slide down until it hits the touch sensor and zeros the encoder"
+)
+
+  public static boolean homeSlide() {
     while (!slideTouch.isPressed()) {
-        slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        slideMotor.setDirection(DcMotorSimple.Direction.REVERSE); // Running the slide until it hits the touch sensor
         slideMotor.setPower(slideSpeed);
       }
     slideMotor.setPower(0); // Stopping the Slide
-    frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // Reseting the encoder to 0
-    telemetry.addData("Encoder Zero", slideEncoder.getCurrentPosition());
-  }
+    slideEncoder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // Reseting the encoder to 0
+    telemetry.addData("Encoder Zero", slideEncoder.getCurrentPosition()); // Adding the encoder data to telemetry for debugging.
+    return true;
+}
